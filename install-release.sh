@@ -397,13 +397,13 @@ get_latest_version() {
     exit 1
   fi
   local i
-  for i in ${!releases_list[@]}
+  for i in "${!releases_list[@]}"
   do
     releases_list[$i]="v${releases_list[$i]#v}"
     grep -q "https://ghproxy.com/https://github.com/XTLS/Xray-core/releases/download/${releases_list[$i]}/Xray-linux-$MACHINE.zip" "$tmp_file" && break
   done
   "rm" "$tmp_file"
-  PRE_RELEASE_LATEST="${releases_list[$i]}"
+  PRE_RELEASE_LATEST="${releases_list[0]}"
 }
 
 version_gt() {
@@ -796,6 +796,7 @@ main() {
         INSTALL_VERSION="$RELEASE_LATEST"
       else
         INSTALL_VERSION="$PRE_RELEASE_LATEST"
+        echo "info: Using Beta version $PRE_RELEASE_LATEST"
       fi
       if ! version_gt "$INSTALL_VERSION" "$CURRENT_VERSION" && [[ "$FORCE" -eq '0' ]]; then
         echo "info: No new version. The current version of Xray is $CURRENT_VERSION ."
